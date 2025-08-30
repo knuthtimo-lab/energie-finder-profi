@@ -2,41 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* EnergieProfis Design System - German Renewable Energy Platform */
 
 @layer base {
   :root {
+    /* Base System Colors */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 218 11% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 218 11% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
+    --popover-foreground: 218 11% 15%;
+    
+    /* Energy Type Colors - Solar Orange */
+    --solar-primary: 22 95% 58%;
+    --solar-secondary: 31 95% 60%;
+    --solar-light: 31 100% 85%;
+    --solar-dark: 22 85% 45%;
+    
+    /* Energy Type Colors - Wind Blue */
+    --wind-primary: 207 90% 54%;
+    --wind-secondary: 207 90% 61%;
+    --wind-light: 207 100% 85%;
+    --wind-dark: 207 80% 41%;
+    
+    /* Energy Type Colors - Geothermal Green */
+    --geo-primary: 122 39% 49%;
+    --geo-secondary: 122 40% 56%;
+    --geo-light: 122 45% 80%;
+    --geo-dark: 122 35% 36%;
+    
+    /* Energy Type Colors - Battery Purple */
+    --battery-primary: 291 64% 42%;
+    --battery-secondary: 291 64% 49%;
+    --battery-light: 291 70% 80%;
+    --battery-dark: 291 60% 29%;
+    
+    /* Brand Colors */
+    --primary: 218 47% 18%;
     --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 218 47% 18%;
+    
+    /* Utility Colors */
+    --muted: 210 20% 94%;
+    --muted-foreground: 218 11% 50%;
+    --accent: 210 20% 92%;
+    --accent-foreground: 218 47% 18%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 218 47% 18%;
+    
+    /* Energy Gradients */
+    --gradient-solar: linear-gradient(135deg, hsl(var(--solar-primary)) 0%, hsl(var(--solar-secondary)) 100%);
+    --gradient-wind: linear-gradient(135deg, hsl(var(--wind-primary)) 0%, hsl(var(--wind-secondary)) 100%);
+    --gradient-geo: linear-gradient(135deg, hsl(var(--geo-primary)) 0%, hsl(var(--geo-secondary)) 100%);
+    --gradient-battery: linear-gradient(135deg, hsl(var(--battery-primary)) 0%, hsl(var(--battery-secondary)) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(218 47% 25%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-solar: 0 8px 32px hsl(var(--solar-primary) / 0.25);
+    --shadow-wind: 0 8px 32px hsl(var(--wind-primary) / 0.25);
+    --shadow-geo: 0 8px 32px hsl(var(--geo-primary) / 0.25);
+    --shadow-battery: 0 8px 32px hsl(var(--battery-primary) / 0.25);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +139,67 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
+  /* Smooth animations for all elements */
+  * {
+    transition: var(--transition-smooth);
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-primary/20;
+  }
+
+  /* Custom gradient text utilities */
+  .gradient-text-solar {
+    background: var(--gradient-solar);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-wind {
+    background: var(--gradient-wind);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-geo {
+    background: var(--gradient-geo);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-battery {
+    background: var(--gradient-battery);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

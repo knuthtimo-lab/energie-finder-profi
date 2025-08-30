@@ -52,6 +52,31 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Energy Type Colors
+				solar: {
+					DEFAULT: 'hsl(var(--solar-primary))',
+					secondary: 'hsl(var(--solar-secondary))',
+					light: 'hsl(var(--solar-light))',
+					dark: 'hsl(var(--solar-dark))'
+				},
+				wind: {
+					DEFAULT: 'hsl(var(--wind-primary))',
+					secondary: 'hsl(var(--wind-secondary))',
+					light: 'hsl(var(--wind-light))',
+					dark: 'hsl(var(--wind-dark))'
+				},
+				geo: {
+					DEFAULT: 'hsl(var(--geo-primary))',
+					secondary: 'hsl(var(--geo-secondary))',
+					light: 'hsl(var(--geo-light))',
+					dark: 'hsl(var(--geo-dark))'
+				},
+				battery: {
+					DEFAULT: 'hsl(var(--battery-primary))',
+					secondary: 'hsl(var(--battery-secondary))',
+					light: 'hsl(var(--battery-light))',
+					dark: 'hsl(var(--battery-dark))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -62,6 +87,23 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			backgroundImage: {
+				'gradient-solar': 'var(--gradient-solar)',
+				'gradient-wind': 'var(--gradient-wind)',
+				'gradient-geo': 'var(--gradient-geo)',
+				'gradient-battery': 'var(--gradient-battery)',
+				'gradient-hero': 'var(--gradient-hero)'
+			},
+			boxShadow: {
+				'solar': 'var(--shadow-solar)',
+				'wind': 'var(--shadow-wind)',
+				'geo': 'var(--shadow-geo)',
+				'battery': 'var(--shadow-battery)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+				'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
