@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Zap, ArrowRight } from "lucide-react";
+import { Search, MapPin, Zap, ArrowRight, Calculator, Award, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {
@@ -10,7 +10,7 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <img
           src="/sun_flow_banner.png"
-          alt="Sun Flow Banner - Renewable Energy Solutions in Germany"
+          alt="Sun Flow Banner - Renewable Energy Solutions in Germany - Solar und Wind Installateure finden"
           className="w-full h-full object-cover"
         />
         {/* Subtle overlay for text readability */}
@@ -106,6 +106,29 @@ const HeroSection = () => {
             <div>
               <div className="text-3xl font-bold text-green-200">4.8★</div>
               <div className="text-sm text-white/90 font-medium">Bewertung</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SEO: Additional content section for better indexing */}
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent py-8 hidden lg:block">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-3 gap-8 text-white/90">
+            <div className="text-center">
+              <Calculator className="w-8 h-8 mx-auto mb-2 text-yellow-300" />
+              <h3 className="font-semibold mb-1">Kostenlose Rechner</h3>
+              <p className="text-sm">Solar- und Windenergie berechnen</p>
+            </div>
+            <div className="text-center">
+              <Award className="w-8 h-8 mx-auto mb-2 text-cyan-300" />
+              <h3 className="font-semibold mb-1">Förderprogramme</h3>
+              <p className="text-sm">BAFA, KfW & kommunale Zuschüsse</p>
+            </div>
+            <div className="text-center">
+              <Shield className="w-8 h-8 mx-auto mb-2 text-green-300" />
+              <h3 className="font-semibold mb-1">Verifizierte Experten</h3>
+              <p className="text-sm">Zertifizierte Fachbetriebe</p>
             </div>
           </div>
         </div>

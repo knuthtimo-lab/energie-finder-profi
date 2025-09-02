@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Star, Phone, Mail, Globe, Filter, AlertCircle } from "lucide-react";
+import { Search, MapPin, Star, Phone, Mail, Globe, Filter, AlertCircle, Calculator, Award, Shield, TrendingUp, Map, Users, Clock, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import { installerService, analyticsService } from "@/lib/database";
 import { cleanAndReseedDatabase } from "@/lib/cleanDatabase";
@@ -23,6 +23,133 @@ const InstallateurFinden = () => {
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const [energyType, setEnergyType] = useState(searchParams.get("type") || "all");
   const [location, setLocation] = useState(searchParams.get("location") || "");
+
+  // SEO: Add structured data for the page
+  useEffect(() => {
+    // Add structured data for the installer directory
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Solar- und Wind-Installateure in Deutschland",
+      "description": "Qualifizierte Fachbetriebe für Photovoltaik und Windenergie finden und vergleichen",
+      "url": window.location.href,
+      "numberOfItems": installers.length,
+      "itemListElement": installers.map((installer, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "LocalBusiness",
+          "name": installer.name,
+          "description": installer.description,
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": installer.location
+          },
+          "telephone": installer.phone,
+          "email": installer.email,
+          "url": installer.website ? `https://${installer.website}` : undefined,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": installer.rating,
+            "reviewCount": installer.review_count || 0
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": `${installer.energy_type === 'solar' ? 'Solar' : 'Wind'}-Installation`,
+            "itemListElement": installer.specialties?.map(specialty => ({
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": specialty
+              }
+            })) || []
+          }
+        }
+      }))
+    };
+
+    // Add breadcrumb structured data
+    const breadcrumbData = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Startseite",
+          "item": window.location.origin
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Installateur finden",
+          "item": window.location.href
+        }
+      ]
+    };
+
+    // Insert structured data into the page
+    const script1 = document.createElement('script');
+    script1.type = 'application/ld+json';
+    script1.text = JSON.stringify(structuredData);
+    document.head.appendChild(script1);
+
+    const script2 = document.createElement('script');
+    script2.type = 'application/ld+json';
+    script2.text = JSON.stringify(breadcrumbData);
+    document.head.appendChild(script2);
+
+    // Cleanup function
+    return () => {
+      if (script1.parentNode) script1.parentNode.removeChild(script1);
+      if (script2.parentNode) script2.parentNode.removeChild(script2);
+    };
+  }, [installers]);
+
+  // SEO: Update page title and meta description
+  useEffect(() => {
+    const title = "Solar- und Wind-Installateur finden – EnergieProfis Vergleich";
+    const description = "Qualifizierte Solar- und Windbetriebe direkt vergleichen. Jetzt Anfrage starten! Fachbetriebe finden, Angebote vergleichen & Kosten sparen – Echtzeit-Vergleich online.";
+    
+    document.title = title;
+    
+    // Update or create meta description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', description);
+
+    // Add canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', window.location.href);
+
+    // Add Open Graph tags
+    const ogTags = [
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: window.location.href },
+      { property: 'og:site_name', content: 'EnergieProfis' }
+    ];
+
+    ogTags.forEach(tag => {
+      let meta = document.querySelector(`meta[property="${tag.property}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('property', tag.property);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', tag.content);
+    });
+  }, []);
 
   // Load installers from database
   const loadInstallers = async () => {
@@ -198,20 +325,133 @@ const InstallateurFinden = () => {
       {/* Header Navigation */}
       <Header />
       
-      {/* Page Header */}
+      {/* SEO-Optimized Page Header */}
       <div className="bg-gradient-to-r from-primary to-primary/80 text-white py-16 mt-16">
         <div className="container mx-auto px-4">
+          {/* H1: Primary SEO heading */}
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Installateure Finden
+            Finden Sie den besten Solar- oder Wind-Installateur in Ihrer Region
           </h1>
-          <p className="text-xl text-white/90 max-w-3xl">
-            Entdecken Sie qualifizierte Fachbetriebe für erneuerbare Energien in Ihrer Region
+          <p className="text-xl text-white/90 max-w-3xl mb-6">
+            Qualifizierte Fachbetriebe für erneuerbare Energien in Ihrer Nähe finden und vergleichen
           </p>
+          
+          {/* SEO: Key benefits and CTAs */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            <div className="text-center p-4 bg-white/10 rounded-lg">
+              <Calculator className="w-8 h-8 mx-auto mb-2" />
+              <h3 className="font-semibold">Angebote vergleichen</h3>
+              <p className="text-sm text-white/80">Kostenlos & unverbindlich</p>
+            </div>
+            <div className="text-center p-4 bg-white/10 rounded-lg">
+              <Award className="w-8 h-8 mx-auto mb-2" />
+              <h3 className="font-semibold">Fördermöglichkeiten</h3>
+              <p className="text-sm text-white/80">BAFA, KfW & kommunale Zuschüsse</p>
+            </div>
+            <div className="text-center p-4 bg-white/10 rounded-lg">
+              <Shield className="w-8 h-8 mx-auto mb-2" />
+              <h3 className="font-semibold">Verifizierte Experten</h3>
+              <p className="text-sm text-white/80">Zertifizierte Fachbetriebe</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Search and Filters */}
+      {/* SEO: Rich content section for better indexing */}
       <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          {/* SEO Content Block 1: Solar Installation */}
+          <Card className="border-l-4 border-l-orange-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-orange-700">
+                <TrendingUp className="w-5 h-5" />
+                Solar-Installation
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Photovoltaik-Anlagen für Ihr Zuhause: Von Balkonkraftwerken bis zur kompletten Dachanlage. 
+                Aktuelle Förderungen 2025, Kostenvergleich und qualifizierte Installateure in Ihrer Region.
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>BAFA-Förderung bis 500€</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>KfW-Kredite mit Tilgungszuschuss</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>EEG-Vergütung für Überschuss</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* SEO Content Block 2: Wind Energy */}
+          <Card className="border-l-4 border-l-blue-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-blue-700">
+                <Map className="w-5 h-5" />
+                Windenergie
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Kleinwindanlagen für Privatgrundstücke: Genehmigungsverfahren, Schallemission, 
+                Mast-Höhen und aktuelle Förderprogramme. Fachbetriebe mit Windenergie-Expertise.
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Genehmigung unter 15m Mast</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Bundesland-spezifische Vorgaben</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Schallemissions-Gutachten</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* SEO Content Block 3: Regional Benefits */}
+          <Card className="border-l-4 border-l-green-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-green-700">
+                <Users className="w-5 h-5" />
+                Regionale Vorteile
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Lokale Installateure kennen die regionalen Gegebenheiten, Förderprogramme und 
+                Genehmigungsverfahren in Ihrem Bundesland. Persönliche Beratung vor Ort.
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Kommunale Förderprogramme</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Lokale Genehmigungsrichtlinien</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Regionale Preisvergleiche</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Search and Filters */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -255,7 +495,48 @@ const InstallateurFinden = () => {
               <Button onClick={handleReset} variant="outline" className="w-full">
                 Filter zurücksetzen
               </Button>
-              
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* SEO: FAQ Section for better content depth */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="w-5 h-5" />
+              Häufige Fragen zu Solar- und Wind-Installation
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="border-b pb-4">
+                <h3 className="font-semibold mb-2">Welche Förderungen gibt es 2025 für Solaranlagen?</h3>
+                <p className="text-muted-foreground text-sm">
+                  BAFA-Förderung für Balkonkraftwerke (bis 500€), KfW-Kredite mit Tilgungszuschuss, 
+                  EEG-Vergütung für Überschussstrom und kommunale Zuschüsse je nach Bundesland.
+                </p>
+              </div>
+              <div className="border-b pb-4">
+                <h3 className="font-semibold mb-2">Brauche ich eine Genehmigung für eine Kleinwindanlage?</h3>
+                <p className="text-muted-foreground text-sm">
+                  Mast-Höhen unter 15m sind in den meisten Bundesländern genehmigungsfrei. 
+                  Ab 15m ist ein Bauantrag erforderlich. Schallemissions-Gutachten können nötig sein.
+                </p>
+              </div>
+              <div className="border-b pb-4">
+                <h3 className="font-semibold mb-2">Wie finde ich den besten Installateur in meiner Region?</h3>
+                <p className="text-muted-foreground text-sm">
+                  Nutzen Sie unseren Vergleich: Bewertungen, Erfahrung, Zertifizierungen und 
+                  regionale Expertise vergleichen. Lokale Installateure kennen die regionalen Vorgaben.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Was kostet eine Solaranlage 2025?</h3>
+                <p className="text-muted-foreground text-sm">
+                  Balkonkraftwerk: 400-800€, Komplette Dachanlage: 8.000-15.000€ je kWp. 
+                  Preise variieren je nach Region, Anbieter und Ausstattung. Nutzen Sie unseren Kostenrechner.
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -449,6 +730,33 @@ const InstallateurFinden = () => {
             </CardContent>
           </Card>
         )}
+
+        {/* SEO: Internal linking section */}
+        <div className="mt-12 p-6 bg-gray-50 rounded-lg">
+          <h2 className="text-2xl font-bold mb-4 text-center">Weitere nützliche Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="text-center p-6 hover:shadow-md transition-shadow">
+              <Calculator className="w-12 h-12 mx-auto mb-4 text-orange-600" />
+              <h3 className="text-xl font-semibold mb-2">Solar-Einsparungsrechner</h3>
+              <p className="text-muted-foreground mb-4">
+                Berechnen Sie Ihre Solareinsparungen und vergleichen Sie Angebote
+              </p>
+              <Button variant="outline" className="w-full">
+                Zum Solarrechner
+              </Button>
+            </Card>
+            <Card className="text-center p-6 hover:shadow-md transition-shadow">
+              <TrendingUp className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+              <h3 className="text-xl font-semibold mb-2">Windenergie-Rechner</h3>
+              <p className="text-muted-foreground mb-4">
+                Windenergie berechnen: Ertrag, Kosten & Angebote vergleichen
+              </p>
+              <Button variant="outline" className="w-full">
+                Zum Windrechner
+              </Button>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
