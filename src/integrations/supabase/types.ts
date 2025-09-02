@@ -398,7 +398,7 @@ export type Database = {
       }
     }
     Enums: {
-      energy_type: "solar" | "wind" | "geothermal" | "battery"
+      energy_type: "solar" | "wind"
       installer_status: "active" | "inactive" | "pending" | "suspended"
       quote_status: "pending" | "accepted" | "rejected" | "expired"
     }
@@ -528,7 +528,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      energy_type: ["solar", "wind", "geothermal", "battery"],
+      energy_type: ["solar", "wind"],
       installer_status: ["active", "inactive", "pending", "suspended"],
       quote_status: ["pending", "accepted", "rejected", "expired"],
     },

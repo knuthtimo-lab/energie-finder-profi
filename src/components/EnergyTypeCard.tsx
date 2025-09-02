@@ -8,7 +8,7 @@ interface EnergyTypeCardProps {
   description: string;
   image: string;
   gradient: string;
-  buttonVariant: "solar" | "wind" | "geo" | "battery";
+  buttonVariant: "solar" | "wind";
   href: string;
   features: string[];
 }

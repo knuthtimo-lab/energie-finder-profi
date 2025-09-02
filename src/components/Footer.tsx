@@ -52,16 +52,6 @@ const Footer = () => {
                   Wind-Installateure
                 </Link>
               </li>
-              <li>
-                <Link to="/geothermie" className="text-primary-foreground/80 hover:text-geo transition-colors">
-                  Geothermie-Installateure
-                </Link>
-              </li>
-              <li>
-                <Link to="/batteriespeicher" className="text-primary-foreground/80 hover:text-battery transition-colors">
-                  Batteriespeicher-Installateure
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -72,11 +62,6 @@ const Footer = () => {
               <li>
                 <Link to="/installateur-finden" className="text-primary-foreground/80 hover:text-white transition-colors">
                   Installateur Finden
-                </Link>
-              </li>
-              <li>
-                <Link to="/kostenlose-beratung" className="text-primary-foreground/80 hover:text-white transition-colors">
-                  Kostenlose Beratung
                 </Link>
               </li>
               <li>

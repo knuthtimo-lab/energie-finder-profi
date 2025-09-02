@@ -1,8 +1,6 @@
 import EnergyTypeCard from "./EnergyTypeCard";
 import solarImage from "@/assets/solar-installation.jpg";
 import windImage from "@/assets/wind-turbines.jpg";
-import geoImage from "@/assets/geothermal-system.jpg";
-import batteryImage from "@/assets/battery-storage.jpg";
 
 const EnergyTypesSection = () => {
   const energyTypes = [
@@ -33,34 +31,6 @@ const EnergyTypesSection = () => {
         "Wartungsarme Technologie",
         "Ideale Ergänzung zu Solar"
       ]
-    },
-    {
-      title: "Geothermie",
-      description: "Heizen und kühlen Sie Ihr Gebäude mit der natürlichen Erdwärme - effizient und umweltschonend.",
-      image: geoImage,
-      gradient: "bg-gradient-geo",
-      buttonVariant: "geo" as const,
-      href: "/geothermie",
-      features: [
-        "Ganzjährig konstante Temperaturen",
-        "Niedrige Betriebskosten",
-        "Heizen und Kühlen in einem System",
-        "Sehr lange Lebensdauer"
-      ]
-    },
-    {
-      title: "Batteriespeicher",
-      description: "Speichern Sie überschüssige Energie und nutzen Sie sie bei Bedarf - für maximale Unabhängigkeit.",
-      image: batteryImage,
-      gradient: "bg-gradient-battery",
-      buttonVariant: "battery" as const,
-      href: "/batteriespeicher",
-      features: [
-        "24/7 Energieverfügbarkeit",
-        "Notstromfunktion",
-        "Intelligente Steuerung",
-        "Erhöhte Eigenverbrauchsquote"
-      ]
     }
   ];
 
@@ -77,7 +47,7 @@ const EnergyTypesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {energyTypes.map((type) => (
             <EnergyTypeCard key={type.title} {...type} />
           ))}

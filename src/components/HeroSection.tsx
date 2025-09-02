@@ -1,96 +1,111 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Zap } from "lucide-react";
+import { Search, MapPin, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-renewable-energy.jpg";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-[600px] flex items-center overflow-hidden">
-      {/* Background Image with Overlay */}
+      {/* Background Image with Minimal Overlay */}
       <div className="absolute inset-0">
         <img
-          src={heroImage}
-          alt="Renewable Energy Solutions in Germany"
+          src="/sun_flow_banner.png"
+          alt="Sun Flow Banner - Renewable Energy Solutions in Germany"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-transparent"></div>
+        {/* Subtle overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/20 to-transparent"></div>
       </div>
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl text-white">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            Finden Sie Ihren perfekten{" "}
-            <span className="bg-gradient-to-r from-solar via-wind to-geo bg-clip-text text-transparent">
-              Erneuerbaren Energie
-            </span>{" "}
-            Installateur
-          </h1>
+          {/* Clean headline with subtle color accents */}
+          <div className="mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              Finden Sie Ihren perfekten{" "}
+              <span className="text-yellow-300">
+                Erneuerbaren
+              </span>{" "}
+              <span className="text-cyan-200">
+                Energie
+              </span>{" "}
+              <span className="text-green-200">
+                Installateur
+              </span>
+            </h1>
+          </div>
           
-          <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed">
-            Vergleichen Sie qualifizierte Fachbetriebe für Solar, Wind, Geothermie 
-            und Batteriespeicher in Ihrer Region. Kostenlos und unverbindlich.
+          {/* Clean description with subtle accents */}
+          <p className="text-xl md:text-2xl text-white/95 mb-8 leading-relaxed font-medium">
+            Vergleichen Sie qualifizierte Fachbetriebe für{" "}
+            <span className="text-yellow-200 font-semibold">Solar</span> und{" "}
+            <span className="text-cyan-200 font-semibold">Wind</span> 
+            in Ihrer Region.{" "}
+            <span className="text-green-200 font-semibold">Kostenlos</span> und{" "}
+            <span className="text-white font-semibold">unverbindlich</span>.
           </p>
 
-          {/* Search Box */}
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-8">
+          {/* Clean search box */}
+          <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-2xl p-6 mb-8">
             <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
+              <div className="flex-1 relative group">
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-200 w-5 h-5" />
                 <Input
                   placeholder="PLZ oder Stadt eingeben..."
-                  className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60 h-12"
+                  className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/70 h-12 focus:border-cyan-200 focus:ring-cyan-200/20 transition-all duration-300"
                 />
               </div>
-              <div className="flex-1 relative">
-                <Zap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
-                <select className="w-full h-12 pl-10 pr-4 bg-white/10 border border-white/20 rounded-lg text-white appearance-none">
+              <div className="flex-1 relative group">
+                <Zap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-200 w-5 h-5" />
+                <select className="w-full h-12 pl-10 pr-4 bg-white/20 border-white/30 rounded-lg text-white appearance-none focus:border-yellow-200 focus:ring-yellow-200/20 transition-all duration-300">
                   <option value="">Energieart wählen</option>
                   <option value="solar">Solar</option>
                   <option value="wind">Wind</option>
-                  <option value="geothermal">Geothermie</option>
-                  <option value="battery">Batteriespeicher</option>
                 </select>
               </div>
-              <Button variant="hero" size="lg" className="bg-white text-primary hover:bg-white/90">
+              <Button 
+                variant="hero" 
+                size="lg" 
+                className="bg-cyan-600 hover:bg-cyan-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
                 <Search className="w-5 h-5 mr-2" />
                 Installateur Finden
               </Button>
             </div>
           </div>
 
-          {/* CTA Buttons */}
+          {/* Clean CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/kostenlose-beratung">
-                Kostenlose Beratung Anfordern
-              </Link>
-            </Button>
-            <Button variant="outline" size="xl" className="border-white/30 text-white hover:bg-white hover:text-primary">
-              <Link to="/installateur-finden">
+            <Button 
+              variant="outline" 
+              size="xl" 
+              className="border-2 border-white/40 text-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
+            >
+              <Link to="/installateur-finden" className="flex items-center">
                 Alle Installateure Ansehen
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Floating Stats */}
+      {/* Clean floating stats */}
       <div className="absolute bottom-8 right-8 hidden xl:block">
-        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-white">
+        <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-2xl p-6 text-white shadow-lg">
           <div className="grid grid-cols-3 gap-6 text-center">
             <div>
-              <div className="text-2xl font-bold">500+</div>
-              <div className="text-sm text-white/80">Installateure</div>
+              <div className="text-3xl font-bold text-yellow-200">500+</div>
+              <div className="text-sm text-white/90 font-medium">Installateure</div>
             </div>
             <div>
-              <div className="text-2xl font-bold">2,500+</div>
-              <div className="text-sm text-white/80">Projekte</div>
+              <div className="text-3xl font-bold text-cyan-200">2,500+</div>
+              <div className="text-sm text-white/90 font-medium">Projekte</div>
             </div>
             <div>
-              <div className="text-2xl font-bold">4.8★</div>
-              <div className="text-sm text-white/80">Bewertung</div>
+              <div className="text-3xl font-bold text-green-200">4.8★</div>
+              <div className="text-sm text-white/90 font-medium">Bewertung</div>
             </div>
           </div>
         </div>

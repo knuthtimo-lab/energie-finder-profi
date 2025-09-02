@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import WindCalculator from "@/components/WindCalculator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Wind, Zap, TrendingUp, Shield, ArrowRight } from "lucide-react";
@@ -62,11 +63,6 @@ const WindPage = () => {
                   Wind-Installateur Finden
                 </Link>
               </Button>
-              <Button variant="wind-outline" size="xl" className="border-white/30 text-white hover:bg-white hover:text-wind">
-                <Link to="/kostenlose-beratung?type=wind">
-                  Kostenlose Beratung
-                </Link>
-              </Button>
             </div>
           </div>
         </div>
@@ -106,6 +102,9 @@ const WindPage = () => {
         </div>
       </section>
 
+      {/* Wind Calculator Section */}
+      <WindCalculator />
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-wind text-white">
         <div className="container mx-auto px-4 text-center">
@@ -118,8 +117,8 @@ const WindPage = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="hero" size="xl" className="bg-white text-wind hover:bg-white/90" asChild>
-              <Link to="/kostenlose-beratung?type=wind">
-                Jetzt kostenlose Beratung anfordern
+              <Link to="/installateur-finden?type=wind">
+                Wind-Installateure finden
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>

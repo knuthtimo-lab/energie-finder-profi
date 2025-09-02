@@ -19,13 +19,13 @@ const WhyChooseUsSection = () => {
       icon: Award,
       title: "Beste Preise",
       description: "Durch unseren Vergleich erhalten Sie garantiert die besten Konditionen für Ihr Projekt.",
-      gradient: "bg-gradient-geo"
+      gradient: "bg-gradient-solar"
     },
     {
       icon: Clock,
       title: "Schnelle Vermittlung",
       description: "In nur wenigen Minuten erhalten Sie passende Installateur-Vorschläge für Ihre Region.",
-      gradient: "bg-gradient-battery"
+      gradient: "bg-gradient-wind"
     },
     {
       icon: HeartHandshake,

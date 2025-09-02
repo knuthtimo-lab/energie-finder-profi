@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SolarCalculator from "@/components/SolarCalculator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sun, Zap, TrendingUp, Shield, ArrowRight } from "lucide-react";
@@ -62,11 +63,6 @@ const Solar = () => {
                   Solar-Installateur Finden
                 </Link>
               </Button>
-              <Button variant="solar-outline" size="xl" className="border-white/30 text-white hover:bg-white hover:text-solar">
-                <Link to="/kostenlose-beratung?type=solar">
-                  Kostenlose Beratung
-                </Link>
-              </Button>
             </div>
           </div>
         </div>
@@ -106,6 +102,9 @@ const Solar = () => {
         </div>
       </section>
 
+      {/* Solar Calculator Section */}
+      <SolarCalculator />
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-solar text-white">
         <div className="container mx-auto px-4 text-center">
@@ -118,8 +117,8 @@ const Solar = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="hero" size="xl" className="bg-white text-solar hover:bg-white/90" asChild>
-              <Link to="/kostenlose-beratung?type=solar">
-                Jetzt kostenlose Beratung anfordern
+              <Link to="/installateur-finden?type=solar">
+                Solar-Installateure finden
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>

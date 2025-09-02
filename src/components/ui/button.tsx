@@ -21,12 +21,8 @@ const buttonVariants = cva(
         // Energy-specific variants
         solar: "bg-gradient-solar text-white hover:shadow-solar transform hover:scale-105",
         wind: "bg-gradient-wind text-white hover:shadow-wind transform hover:scale-105",
-        geo: "bg-gradient-geo text-white hover:shadow-geo transform hover:scale-105",
-        battery: "bg-gradient-battery text-white hover:shadow-battery transform hover:scale-105",
         "solar-outline": "border-2 border-solar bg-transparent text-solar hover:bg-solar hover:text-white",
         "wind-outline": "border-2 border-wind bg-transparent text-wind hover:bg-wind hover:text-white",
-        "geo-outline": "border-2 border-geo bg-transparent text-geo hover:bg-geo hover:text-white",
-        "battery-outline": "border-2 border-battery bg-transparent text-battery hover:bg-battery hover:text-white",
         hero: "bg-gradient-hero text-white hover:shadow-lg transform hover:scale-105 border border-white/20",
       },
       size: {

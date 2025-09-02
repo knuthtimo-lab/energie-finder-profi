@@ -26,18 +26,6 @@
     --wind-light: 207 100% 85%;
     --wind-dark: 207 80% 41%;
     
-    /* Energy Type Colors - Geothermal Green */
-    --geo-primary: 122 39% 49%;
-    --geo-secondary: 122 40% 56%;
-    --geo-light: 122 45% 80%;
-    --geo-dark: 122 35% 36%;
-    
-    /* Energy Type Colors - Battery Purple */
-    --battery-primary: 291 64% 42%;
-    --battery-secondary: 291 64% 49%;
-    --battery-light: 291 70% 80%;
-    --battery-dark: 291 60% 29%;
-    
     /* Brand Colors */
     --primary: 218 47% 18%;
     --primary-foreground: 210 40% 98%;
@@ -58,8 +46,6 @@
     /* Energy Gradients */
     --gradient-solar: linear-gradient(135deg, hsl(var(--solar-primary)) 0%, hsl(var(--solar-secondary)) 100%);
     --gradient-wind: linear-gradient(135deg, hsl(var(--wind-primary)) 0%, hsl(var(--wind-secondary)) 100%);
-    --gradient-geo: linear-gradient(135deg, hsl(var(--geo-primary)) 0%, hsl(var(--geo-secondary)) 100%);
-    --gradient-battery: linear-gradient(135deg, hsl(var(--battery-primary)) 0%, hsl(var(--battery-secondary)) 100%);
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(218 47% 25%) 100%);
     
     /* Shadows */
@@ -68,8 +54,6 @@
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-solar: 0 8px 32px hsl(var(--solar-primary) / 0.25);
     --shadow-wind: 0 8px 32px hsl(var(--wind-primary) / 0.25);
-    --shadow-geo: 0 8px 32px hsl(var(--geo-primary) / 0.25);
-    --shadow-battery: 0 8px 32px hsl(var(--battery-primary) / 0.25);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -189,17 +173,28 @@
     background-clip: text;
   }
 
-  .gradient-text-geo {
-    background: var(--gradient-geo);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* Solar Calculator Animations */
+  @keyframes float {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-60px, -60px); }
   }
 
-  .gradient-text-battery {
-    background: var(--gradient-battery);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  @keyframes growUp {
+    from { height: 0; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in {
+    animation: fade-in 0.5s ease-out;
+  }
+
+  /* Wind Calculator Animations */
+  @keyframes windFlow {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-60px, -60px) rotate(360deg); }
   }
 }

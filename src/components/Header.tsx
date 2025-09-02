@@ -23,12 +23,6 @@ const Header = () => {
             <Link to="/wind" className="text-foreground hover:text-wind transition-colors font-medium">
               Wind
             </Link>
-            <Link to="/geothermie" className="text-foreground hover:text-geo transition-colors font-medium">
-              Geothermie
-            </Link>
-            <Link to="/batteriespeicher" className="text-foreground hover:text-battery transition-colors font-medium">
-              Batteriespeicher
-            </Link>
             <Link to="/installateur-finden" className="text-foreground hover:text-primary transition-colors font-medium">
               Installateur Finden
             </Link>
@@ -38,12 +32,6 @@ const Header = () => {
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="outline" size="sm" asChild>
               <Link to="/unternehmen-listen">Unternehmen Listen</Link>
-            </Button>
-            <Button variant="hero" size="sm" asChild>
-              <Link to="/kostenlose-beratung">
-                <Phone className="w-4 h-4 mr-2" />
-                Kostenlose Beratung
-              </Link>
             </Button>
           </div>
 

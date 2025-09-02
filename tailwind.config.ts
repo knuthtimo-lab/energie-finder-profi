@@ -65,18 +65,6 @@ export default {
 					light: 'hsl(var(--wind-light))',
 					dark: 'hsl(var(--wind-dark))'
 				},
-				geo: {
-					DEFAULT: 'hsl(var(--geo-primary))',
-					secondary: 'hsl(var(--geo-secondary))',
-					light: 'hsl(var(--geo-light))',
-					dark: 'hsl(var(--geo-dark))'
-				},
-				battery: {
-					DEFAULT: 'hsl(var(--battery-primary))',
-					secondary: 'hsl(var(--battery-secondary))',
-					light: 'hsl(var(--battery-light))',
-					dark: 'hsl(var(--battery-dark))'
-				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -91,15 +79,11 @@ export default {
 			backgroundImage: {
 				'gradient-solar': 'var(--gradient-solar)',
 				'gradient-wind': 'var(--gradient-wind)',
-				'gradient-geo': 'var(--gradient-geo)',
-				'gradient-battery': 'var(--gradient-battery)',
 				'gradient-hero': 'var(--gradient-hero)'
 			},
 			boxShadow: {
 				'solar': 'var(--shadow-solar)',
-				'wind': 'var(--shadow-wind)',
-				'geo': 'var(--shadow-geo)',
-				'battery': 'var(--shadow-battery)'
+				'wind': 'var(--shadow-wind)'
 			},
 			transitionTimingFunction: {
 				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
