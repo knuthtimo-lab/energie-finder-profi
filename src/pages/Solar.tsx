@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sun, Zap, TrendingUp, Shield, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import solarImage from "@/assets/solar-installation.jpg";
 
 const Solar = () => {
   const benefits = [
@@ -39,8 +38,8 @@ const Solar = () => {
       <section className="relative min-h-[500px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={solarImage}
-            alt="Solar Installation"
+            src="/solar_banner.png"
+            alt="Solar Banner"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-solar/80 via-solar/60 to-transparent"></div>

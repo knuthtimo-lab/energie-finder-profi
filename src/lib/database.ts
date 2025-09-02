@@ -24,7 +24,7 @@ export const installerService = {
       .order('rating', { ascending: false });
 
     if (filters?.energyType && filters.energyType !== 'all') {
-      query = query.contains('energy_type', [filters.energyType]);
+      query = query.eq('energy_type', filters.energyType);
     }
 
     if (filters?.location) {

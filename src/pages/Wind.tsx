@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Wind, Zap, TrendingUp, Shield, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import windImage from "@/assets/wind-turbines.jpg";
 
 const WindPage = () => {
   const benefits = [
@@ -39,9 +38,9 @@ const WindPage = () => {
       <section className="relative min-h-[500px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={windImage}
-            alt="Wind Turbines"
-            className="w-full h-full object-cover"
+            src="/wind_banner.png"
+            alt="Wind Banner"
+            className="w-full h-full object-cover object-bottom"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-wind/80 via-wind/60 to-transparent"></div>
         </div>

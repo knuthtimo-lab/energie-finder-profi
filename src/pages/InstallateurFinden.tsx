@@ -37,7 +37,23 @@ const InstallateurFinden = () => {
       };
 
       const data = await installerService.getInstallers(filters);
-      setInstallers(data || []);
+      
+      // If no installers found, automatically seed the database
+      if (!data || data.length === 0) {
+        console.log('No installers found, seeding database...');
+        try {
+          await cleanAndReseedDatabase();
+          // Try to load installers again after seeding
+          const reseededData = await installerService.getInstallers(filters);
+          setInstallers(reseededData || []);
+        } catch (seedError) {
+          console.error('Error seeding database:', seedError);
+          setError('Datenbank wird initialisiert. Bitte versuchen Sie es in wenigen Sekunden erneut.');
+          setInstallers([]);
+        }
+      } else {
+        setInstallers(data);
+      }
 
       // Track search event
       if (searchTerm || energyType !== "all" || location) {
@@ -243,6 +259,65 @@ const InstallateurFinden = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Debug Section - Only show in development */}
+        {process.env.NODE_ENV === 'development' && (
+          <Card className="mb-6 border-orange-200 bg-orange-50">
+            <CardHeader>
+              <CardTitle className="text-orange-800">Debug Tools (Development Only)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={handleTestConnection} variant="outline" size="sm">
+                  Test Connection
+                </Button>
+                <Button onClick={handleDebugDatabase} variant="outline" size="sm">
+                  Debug Database
+                </Button>
+                <Button onClick={handleSeedDatabase} variant="outline" size="sm">
+                  Seed Database
+                </Button>
+                <Button onClick={handleForceReseed} variant="outline" size="sm">
+                  Force Reseed
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {error && (
+          <Card className="mb-6 border-red-200 bg-red-50">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-red-800 mb-2">Fehler beim Laden</h3>
+                <p className="text-red-700 mb-4">{error}</p>
+                <div className="flex gap-2 justify-center">
+                  <Button onClick={loadInstallers} variant="outline" className="border-red-300 text-red-700 hover:bg-red-100">
+                    Erneut versuchen
+                  </Button>
+                  {process.env.NODE_ENV === 'development' && (
+                    <Button onClick={handleSeedDatabase} variant="outline" className="border-orange-300 text-orange-700 hover:bg-orange-100">
+                      Datenbank initialisieren
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Loading State */}
+        {loading && (
+          <Card className="mb-6 border-blue-200 bg-blue-50">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-blue-700">Installateure werden geladen...</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Results */}
         <div className="mb-4">
