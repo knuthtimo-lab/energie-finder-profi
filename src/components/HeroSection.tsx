@@ -74,20 +74,6 @@ const HeroSection = () => {
               </Button>
             </div>
           </div>
-
-          {/* Clean CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button 
-              variant="outline" 
-              size="xl" 
-              className="border-2 border-white/40 text-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
-            >
-              <Link to="/installateur-finden" className="flex items-center">
-                Alle Installateure Ansehen
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-          </div>
         </div>
       </div>
 
@@ -132,6 +118,20 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Moved "Alle Installateure Ansehen" button to upper right corner */}
+      <div className="absolute top-8 right-8 z-20">
+        <Button 
+          variant="outline" 
+          size="lg" 
+          className="border-2 border-white/40 text-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
+        >
+          <Link to="/installateur-finden" className="flex items-center">
+            Alle Installateure Ansehen
+            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </Button>
       </div>
     </section>
   );

@@ -1,8 +1,90 @@
-# Welcome to your Lovable project
+# EnergieProfis - Renewable Energy Platform
+
+A React + TypeScript platform connecting energy customers with qualified solar and wind installation professionals in Germany.
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/54a0b4f8-e87d-43d2-ac51-69b3e38c23fb
+**Domain**: energie-profis.de
+
+## Answer Engine Optimization (AEO) Features
+
+This project implements comprehensive AEO to be cited by ChatGPT, Perplexity, and other AI answer engines:
+
+### ✅ Implemented Features
+
+- **Robots.txt**: Explicitly allows PerplexityBot and GPTBot
+- **IndexNow Integration**: Automatic URL submission with queue and retry logic
+- **Sitemaps**: XML sitemaps with accurate lastmod dates
+- **Canonical URLs**: Single canonical per page for AI indexing
+- **JSON-LD Schema**: FAQ, HowTo, Article, Organization markup
+- **Content Metadata**: Visible "Zuletzt aktualisiert" and author information
+
+### 🔧 AEO Setup
+
+1. **Environment Variables**
+   ```bash
+   VITE_INDEXNOW_KEY=your-indexnow-key-here
+   VITE_SITE_HOST=energie-profis.de
+   ```
+
+2. **Create IndexNow Key File**
+   ```bash
+   # Create public key file (replace with your actual key)
+   echo "your-indexnow-key-here" > public/your-indexnow-key-here.txt
+   ```
+
+3. **Usage in Components**
+   ```tsx
+   import Canonical from '@/components/seo/Canonical';
+   import JsonLd from '@/components/seo/JsonLd';
+   import ContentMeta from '@/components/seo/ContentMeta';
+   import { buildFAQPageJsonLd, exampleFAQs } from '@/lib/schema';
+   
+   function MyPage() {
+     return (
+       <>
+         <Canonical />
+         <JsonLd data={buildFAQPageJsonLd(exampleFAQs)} />
+         <ContentMeta lastUpdated={new Date()} />
+       </>
+     );
+   }
+   ```
+
+4. **Manual IndexNow Ping**
+   ```bash
+   npm run ping-indexnow https://energie-profis.de/ https://energie-profis.de/solar
+   ```
+
+### 🧪 Testing AEO Features
+
+Run E2E tests to validate AEO implementation:
+
+```bash
+npm run test:e2e
+```
+
+Tests cover:
+- Robots.txt allows AI bots
+- Canonical URLs are present and correct
+- JSON-LD schema is valid
+- Sitemap includes all pages with lastmod
+
+### 📋 Manual Validation
+
+Quick checks to verify AEO compliance:
+
+```bash
+# Check robots.txt allows AI bots
+curl https://energie-profis.de/robots.txt | grep -E "(PerplexityBot|GPTBot)"
+
+# Validate sitemap structure  
+curl https://energie-profis.de/sitemap.xml | xmllint --format -
+
+# Check canonical on homepage
+curl -s https://energie-profis.de/ | grep -o '<link rel="canonical"[^>]*>'
+```
 
 ## How can I edit this code?
 

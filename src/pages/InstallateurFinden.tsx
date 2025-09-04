@@ -499,47 +499,6 @@ const InstallateurFinden = () => {
           </CardContent>
         </Card>
 
-        {/* SEO: FAQ Section for better content depth */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Clock className="w-5 h-5" />
-              Häufige Fragen zu Solar- und Wind-Installation
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="border-b pb-4">
-                <h3 className="font-semibold mb-2">Welche Förderungen gibt es 2025 für Solaranlagen?</h3>
-                <p className="text-muted-foreground text-sm">
-                  BAFA-Förderung für Balkonkraftwerke (bis 500€), KfW-Kredite mit Tilgungszuschuss, 
-                  EEG-Vergütung für Überschussstrom und kommunale Zuschüsse je nach Bundesland.
-                </p>
-              </div>
-              <div className="border-b pb-4">
-                <h3 className="font-semibold mb-2">Brauche ich eine Genehmigung für eine Kleinwindanlage?</h3>
-                <p className="text-muted-foreground text-sm">
-                  Mast-Höhen unter 15m sind in den meisten Bundesländern genehmigungsfrei. 
-                  Ab 15m ist ein Bauantrag erforderlich. Schallemissions-Gutachten können nötig sein.
-                </p>
-              </div>
-              <div className="border-b pb-4">
-                <h3 className="font-semibold mb-2">Wie finde ich den besten Installateur in meiner Region?</h3>
-                <p className="text-muted-foreground text-sm">
-                  Nutzen Sie unseren Vergleich: Bewertungen, Erfahrung, Zertifizierungen und 
-                  regionale Expertise vergleichen. Lokale Installateure kennen die regionalen Vorgaben.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Was kostet eine Solaranlage 2025?</h3>
-                <p className="text-muted-foreground text-sm">
-                  Balkonkraftwerk: 400-800€, Komplette Dachanlage: 8.000-15.000€ je kWp. 
-                  Preise variieren je nach Region, Anbieter und Ausstattung. Nutzen Sie unseren Kostenrechner.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Debug Section - Only show in development */}
         {process.env.NODE_ENV === 'development' && (
@@ -730,6 +689,48 @@ const InstallateurFinden = () => {
             </CardContent>
           </Card>
         )}
+
+        {/* SEO: FAQ Section for better content depth */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="w-5 h-5" />
+              Häufige Fragen zu Solar- und Wind-Installation
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="border-b pb-4">
+                <h3 className="font-semibold mb-2">Welche Förderungen gibt es 2025 für Solaranlagen?</h3>
+                <p className="text-muted-foreground text-sm">
+                  BAFA-Förderung für Balkonkraftwerke (bis 500€), KfW-Kredite mit Tilgungszuschuss, 
+                  EEG-Vergütung für Überschussstrom und kommunale Zuschüsse je nach Bundesland.
+                </p>
+              </div>
+              <div className="border-b pb-4">
+                <h3 className="font-semibold mb-2">Brauche ich eine Genehmigung für eine Kleinwindanlage?</h3>
+                <p className="text-muted-foreground text-sm">
+                  Mast-Höhen unter 15m sind in den meisten Bundesländern genehmigungsfrei. 
+                  Ab 15m ist ein Bauantrag erforderlich. Schallemissions-Gutachten können nötig sein.
+                </p>
+              </div>
+              <div className="border-b pb-4">
+                <h3 className="font-semibold mb-2">Wie finde ich den besten Installateur in meiner Region?</h3>
+                <p className="text-muted-foreground text-sm">
+                  Nutzen Sie unseren Vergleich: Bewertungen, Erfahrung, Zertifizierungen und 
+                  regionale Expertise vergleichen. Lokale Installateure kennen die regionalen Vorgaben.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Was kostet eine Solaranlage 2025?</h3>
+                <p className="text-muted-foreground text-sm">
+                  Balkonkraftwerk: 400-800€, Komplette Dachanlage: 8.000-15.000€ je kWp. 
+                  Preise variieren je nach Region, Anbieter und Ausstattung. Nutzen Sie unseren Kostenrechner.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* SEO: Internal linking section */}
         <div className="mt-12 p-6 bg-gray-50 rounded-lg">
