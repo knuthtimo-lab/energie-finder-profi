@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Users, Award, Clock, HeartHandshake, TrendingUp } from "lucide-react";
+import { Shield, Award, Clock, TrendingUp } from "lucide-react";
 
 const WhyChooseUsSection = () => {
   const features = [
@@ -8,12 +8,6 @@ const WhyChooseUsSection = () => {
       title: "Verifizierte Installateure",
       description: "Alle Fachbetriebe werden sorgfältig geprüft und zertifiziert für höchste Qualitätsstandards.",
       gradient: "bg-gradient-solar"
-    },
-    {
-      icon: Users,
-      title: "Kostenlose Beratung",
-      description: "Erhalten Sie unverbindliche Beratung und bis zu 3 Angebote von qualifizierten Experten.",
-      gradient: "bg-gradient-wind"
     },
     {
       icon: Award,
@@ -26,12 +20,6 @@ const WhyChooseUsSection = () => {
       title: "Schnelle Vermittlung",
       description: "In nur wenigen Minuten erhalten Sie passende Installateur-Vorschläge für Ihre Region.",
       gradient: "bg-gradient-wind"
-    },
-    {
-      icon: HeartHandshake,
-      title: "Persönlicher Service",
-      description: "Unser Expertenteam steht Ihnen bei allen Fragen rund um erneuerbare Energien zur Seite.",
-      gradient: "bg-gradient-solar"
     },
     {
       icon: TrendingUp,
@@ -54,7 +42,7 @@ const WhyChooseUsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {features.map((feature, index) => (
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/50 backdrop-blur-sm">
               <CardContent className="p-8 text-center">

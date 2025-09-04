@@ -120,6 +120,15 @@ const HeroSection = () => {
         </div>
       </div>
 
+      {/* Logo in top left corner */}
+      <div className="absolute top-8 left-8 z-20">
+        <img 
+          src="/icon_energie-finder.jpeg" 
+          alt="EnergieProfis Logo" 
+          className="w-12 h-12 rounded-lg shadow-lg border-2 border-white/30 bg-white/10 backdrop-blur-sm"
+        />
+      </div>
+
       {/* Moved "Alle Installateure Ansehen" button to upper right corner */}
       <div className="absolute top-8 right-8 z-20">
         <Button 
