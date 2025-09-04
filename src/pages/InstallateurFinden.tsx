@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, Star, Phone, Mail, Globe, Filter, AlertCircle, Calculator, Award, Shield, TrendingUp, Map, Users, Clock, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { installerService, analyticsService } from "@/lib/database";
 import { cleanAndReseedDatabase } from "@/lib/cleanDatabase";
 import { debugDatabase, forceDeleteAll, testConnection } from "@/lib/debugDatabase";
@@ -22,7 +23,13 @@ const InstallateurFinden = () => {
   
   const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
   const [energyType, setEnergyType] = useState(searchParams.get("type") || "all");
-  const [location, setLocation] = useState(searchParams.get("location") || "");
+  const [bundesland, setBundesland] = useState(searchParams.get("bundesland") || "all");
+  
+  // Pagination state
+  const [displayedInstallers, setDisplayedInstallers] = useState<Installer[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalInstallers, setTotalInstallers] = useState(0);
+  const [showAll, setShowAll] = useState(false);
 
   // SEO: Add structured data for the page
   useEffect(() => {
@@ -33,8 +40,8 @@ const InstallateurFinden = () => {
       "name": "Solar- und Wind-Installateure in Deutschland",
       "description": "Qualifizierte Fachbetriebe für Photovoltaik und Windenergie finden und vergleichen",
       "url": window.location.href,
-      "numberOfItems": installers.length,
-      "itemListElement": installers.map((installer, index) => ({
+      "numberOfItems": displayedInstallers.length,
+      "itemListElement": displayedInstallers.map((installer, index) => ({
         "@type": "ListItem",
         "position": index + 1,
         "item": {
@@ -152,18 +159,27 @@ const InstallateurFinden = () => {
   }, []);
 
   // Load installers from database
-  const loadInstallers = async () => {
+  const loadInstallers = async (resetPagination = true) => {
     try {
       setLoading(true);
       setError(null);
       
+      if (resetPagination) {
+        setCurrentPage(0);
+        setShowAll(false);
+      }
+      
       const filters = {
         energyType: energyType && energyType !== "all" ? energyType : undefined,
-        location: location || undefined,
-        searchTerm: searchTerm || undefined
+        bundesland: bundesland && bundesland !== "all" ? bundesland : undefined,
+        searchTerm: searchTerm || undefined,
+        limit: showAll ? undefined : 10,
+        offset: showAll ? undefined : (currentPage * 10)
       };
 
-      const data = await installerService.getInstallers(filters);
+      const result = await installerService.getInstallers(filters);
+      const data = result.data;
+      const totalCount = result.totalCount;
       
       // If no installers found, automatically seed the database
       if (!data || data.length === 0) {
@@ -171,19 +187,38 @@ const InstallateurFinden = () => {
         try {
           await cleanAndReseedDatabase();
           // Try to load installers again after seeding
-          const reseededData = await installerService.getInstallers(filters);
-          setInstallers(reseededData || []);
+          const reseededResult = await installerService.getInstallers(filters);
+          if (resetPagination) {
+            setInstallers(reseededResult.data || []);
+            setDisplayedInstallers(reseededResult.data || []);
+            setTotalInstallers(reseededResult.totalCount || 0);
+          } else {
+            const newInstallers = [...displayedInstallers, ...(reseededResult.data || [])];
+            setDisplayedInstallers(newInstallers);
+            setTotalInstallers(reseededResult.totalCount || 0);
+          }
         } catch (seedError) {
           console.error('Error seeding database:', seedError);
           setError('Datenbank wird initialisiert. Bitte versuchen Sie es in wenigen Sekunden erneut.');
           setInstallers([]);
+          setDisplayedInstallers([]);
+          setTotalInstallers(0);
         }
       } else {
-        setInstallers(data);
+        if (resetPagination) {
+          setInstallers(data);
+          setDisplayedInstallers(data);
+          setTotalInstallers(totalCount);
+        } else {
+          // Append new data for pagination
+          const newInstallers = [...displayedInstallers, ...data];
+          setDisplayedInstallers(newInstallers);
+          setTotalInstallers(totalCount);
+        }
       }
 
       // Track search event
-      if (searchTerm || energyType !== "all" || location) {
+      if (searchTerm || energyType !== "all" || bundesland !== "all") {
         analyticsService.trackEvent({
           event_type: 'installer_search',
           page_url: window.location.pathname,
@@ -196,6 +231,7 @@ const InstallateurFinden = () => {
       console.error('Error loading installers:', err);
       setError('Fehler beim Laden der Installateure. Bitte versuchen Sie es später erneut.');
       setInstallers([]);
+      setDisplayedInstallers([]);
     } finally {
       setLoading(false);
     }
@@ -209,25 +245,65 @@ const InstallateurFinden = () => {
   // Reload when filters change
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      loadInstallers();
+      loadInstallers(true); // Reset pagination when filters change
     }, 500); // Debounce search
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, energyType, location]);
+  }, [searchTerm, energyType, bundesland]);
 
   // Update URL params when filters change
   useEffect(() => {
     const params = new URLSearchParams();
     if (searchTerm) params.set("search", searchTerm);
     if (energyType && energyType !== "all") params.set("type", energyType);
-    if (location) params.set("location", location);
+    if (bundesland && bundesland !== "all") params.set("bundesland", bundesland);
     setSearchParams(params);
-  }, [searchTerm, energyType, location, setSearchParams]);
+  }, [searchTerm, energyType, bundesland, setSearchParams]);
 
   const handleReset = () => {
     setSearchTerm("");
     setEnergyType("all");
-    setLocation("");
+    setBundesland("all");
+  };
+
+  // Handle "Show More" button click
+  const handleShowMore = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default button behavior
+    e.stopPropagation(); // Stop event bubbling
+    
+    if (currentPage >= 2) {
+      // After 3 clicks (30 installers), show all remaining
+      setShowAll(true);
+      setCurrentPage(0);
+      await loadInstallers(false);
+    } else {
+      // Load next 10 installers
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const filters = {
+          energyType: energyType && energyType !== "all" ? energyType : undefined,
+          bundesland: bundesland && bundesland !== "all" ? bundesland : undefined,
+          searchTerm: searchTerm || undefined,
+          limit: 10,
+          offset: nextPage * 10
+        };
+
+        const result = await installerService.getInstallers(filters);
+        const newInstallers = [...displayedInstallers, ...(result.data || [])];
+        setDisplayedInstallers(newInstallers);
+        setTotalInstallers(result.totalCount || 0);
+      } catch (err) {
+        console.error('Error loading more installers:', err);
+        setError('Fehler beim Laden weiterer Installateure. Bitte versuchen Sie es später erneut.');
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   // Test connection
@@ -258,7 +334,7 @@ const InstallateurFinden = () => {
     try {
       await cleanAndReseedDatabase();
       alert('Deutsche Installateure erfolgreich geladen!');
-      loadInstallers(); // Reload the data
+      loadInstallers(true); // Reload the data with pagination reset
     } catch (error) {
       console.error('Error seeding database:', error);
       alert('Fehler beim Laden der Installateure. Details in der Konsole.');
@@ -482,15 +558,30 @@ const InstallateurFinden = () => {
                 </SelectContent>
               </Select>
               
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                <Input
-                  placeholder="PLZ oder Stadt"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+              <Select value={bundesland} onValueChange={setBundesland}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Bundesland wählen" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alle Bundesländer</SelectItem>
+                  <SelectItem value="Baden-Württemberg">Baden-Württemberg</SelectItem>
+                  <SelectItem value="Bayern">Bayern</SelectItem>
+                  <SelectItem value="Berlin">Berlin</SelectItem>
+                  <SelectItem value="Brandenburg">Brandenburg</SelectItem>
+                  <SelectItem value="Bremen">Bremen</SelectItem>
+                  <SelectItem value="Hamburg">Hamburg</SelectItem>
+                  <SelectItem value="Hessen">Hessen</SelectItem>
+                  <SelectItem value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</SelectItem>
+                  <SelectItem value="Niedersachsen">Niedersachsen</SelectItem>
+                  <SelectItem value="Nordrhein-Westfalen">Nordrhein-Westfalen</SelectItem>
+                  <SelectItem value="Rheinland-Pfalz">Rheinland-Pfalz</SelectItem>
+                  <SelectItem value="Saarland">Saarland</SelectItem>
+                  <SelectItem value="Sachsen">Sachsen</SelectItem>
+                  <SelectItem value="Sachsen-Anhalt">Sachsen-Anhalt</SelectItem>
+                  <SelectItem value="Schleswig-Holstein">Schleswig-Holstein</SelectItem>
+                  <SelectItem value="Thüringen">Thüringen</SelectItem>
+                </SelectContent>
+              </Select>
               
               <Button onClick={handleReset} variant="outline" className="w-full">
                 Filter zurücksetzen
@@ -533,7 +624,7 @@ const InstallateurFinden = () => {
                 <h3 className="text-lg font-semibold text-red-800 mb-2">Fehler beim Laden</h3>
                 <p className="text-red-700 mb-4">{error}</p>
                 <div className="flex gap-2 justify-center">
-                  <Button onClick={loadInstallers} variant="outline" className="border-red-300 text-red-700 hover:bg-red-100">
+                  <Button onClick={() => loadInstallers(true)} variant="outline" className="border-red-300 text-red-700 hover:bg-red-100">
                     Erneut versuchen
                   </Button>
                   {process.env.NODE_ENV === 'development' && (
@@ -562,13 +653,13 @@ const InstallateurFinden = () => {
         {/* Results */}
         <div className="mb-4">
           <p className="text-muted-foreground">
-            {installers.length} Installateur{installers.length !== 1 ? 'e' : ''} gefunden
+            {displayedInstallers.length} von {totalInstallers} Installateur{totalInstallers !== 1 ? 'e' : ''} angezeigt
           </p>
         </div>
 
         {/* Installer Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {installers.map((installer) => (
+          {displayedInstallers.map((installer) => (
             <Card key={installer.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -677,7 +768,22 @@ const InstallateurFinden = () => {
           ))}
         </div>
 
-        {installers.length === 0 && (
+        {/* Show More Button */}
+        {displayedInstallers.length > 0 && displayedInstallers.length < totalInstallers && (
+          <div className="text-center mt-12 mb-16">
+            <Button 
+              type="button"
+              onClick={handleShowMore} 
+              variant="outline" 
+              size="lg"
+              className="px-12 py-3 text-lg font-semibold"
+            >
+              {currentPage >= 2 ? 'Alle anzeigen' : 'Mehr anzeigen'}
+            </Button>
+          </div>
+        )}
+
+        {displayedInstallers.length === 0 && (
           <Card className="text-center py-12">
             <CardContent>
               <p className="text-muted-foreground text-lg mb-4">
@@ -759,6 +865,9 @@ const InstallateurFinden = () => {
           </div>
         </div>
       </div>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

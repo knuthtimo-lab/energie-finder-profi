@@ -14,28 +14,64 @@ export const installerService = {
   // Get all installers with optional filters
   async getInstallers(filters?: {
     energyType?: string;
-    location?: string;
+    bundesland?: string;
     searchTerm?: string;
+    limit?: number;
+    offset?: number;
   }) {
-    let query = supabase
+    // First, get the total count
+    let countQuery = supabase
+      .from('installers')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'active');
+
+    if (filters?.energyType && filters.energyType !== 'all') {
+      countQuery = countQuery.eq('energy_type', filters.energyType);
+    }
+
+    if (filters?.bundesland && filters.bundesland !== 'all') {
+      countQuery = countQuery.ilike('location', `%${filters.bundesland}%`);
+    }
+
+    if (filters?.searchTerm) {
+      countQuery = countQuery.or(`name.ilike.%${filters.searchTerm}%,description.ilike.%${filters.searchTerm}%,specialties.cs.{${filters.searchTerm}}`);
+    }
+
+    const { count, error: countError } = await countQuery;
+    
+    if (countError) {
+      console.error('Error fetching installer count:', countError);
+      throw countError;
+    }
+
+    // Then get the actual data with pagination
+    let dataQuery = supabase
       .from('installers')
       .select('*')
       .eq('status', 'active')
       .order('rating', { ascending: false });
 
     if (filters?.energyType && filters.energyType !== 'all') {
-      query = query.eq('energy_type', filters.energyType);
+      dataQuery = dataQuery.eq('energy_type', filters.energyType);
     }
 
-    if (filters?.location) {
-      query = query.ilike('location', `%${filters.location}%`);
+    if (filters?.bundesland && filters.bundesland !== 'all') {
+      dataQuery = dataQuery.ilike('location', `%${filters.bundesland}%`);
     }
 
     if (filters?.searchTerm) {
-      query = query.or(`name.ilike.%${filters.searchTerm}%,description.ilike.%${filters.searchTerm}%,specialties.cs.{${filters.searchTerm}}`);
+      dataQuery = dataQuery.or(`name.ilike.%${filters.searchTerm}%,description.ilike.%${filters.searchTerm}%,specialties.cs.{${filters.searchTerm}}`);
     }
 
-    const { data, error } = await query;
+    // Apply pagination
+    if (filters?.limit) {
+      dataQuery = dataQuery.limit(filters.limit);
+    }
+    if (filters?.offset) {
+      dataQuery = dataQuery.range(filters.offset, filters.offset + (filters.limit || 10) - 1);
+    }
+
+    const { data, error } = await dataQuery;
     
     if (error) {
       console.error('Error fetching installers:', error);
@@ -48,7 +84,7 @@ export const installerService = {
       throw error;
     }
 
-    return data;
+    return { data: data || [], totalCount: count || 0 };
   },
 
   // Get installer by ID
@@ -182,14 +218,16 @@ export const useInstallers = () => {
 
   const fetchInstallers = async (filters?: {
     energyType?: string;
-    location?: string;
+    bundesland?: string;
     searchTerm?: string;
+    limit?: number;
+    offset?: number;
   }) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await installerService.getInstallers(filters);
-      setInstallers(data || []);
+      const result = await installerService.getInstallers(filters);
+      setInstallers(result.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       setInstallers([]);
