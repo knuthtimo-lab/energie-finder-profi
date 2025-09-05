@@ -19,7 +19,7 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white mt-20">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -137,28 +137,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Kontakt</h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-3 text-gray-300">
-                <Mail className="w-4 h-4" />
-                <span>info@energieprofis.de</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <Phone className="w-4 h-4" />
-                <span>+49 (0) 800 123 456</span>
-              </div>
-              <div className="flex items-start gap-3 text-gray-300">
-                <MapPin className="w-4 h-4 mt-0.5" />
-                <span>
-                  EnergieProfis GmbH<br />
-                  Musterstraße 123<br />
-                  10115 Berlin
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Bottom Section */}
@@ -168,18 +146,27 @@ const Footer = () => {
               © 2025 EnergieProfis. Alle Rechte vorbehalten.
             </div>
             <div className="flex space-x-6 text-sm">
-              <a href="/" className="text-gray-400 hover:text-white transition-colors">
+              <Link 
+                to="/impressum" 
+                className="text-gray-400 hover:text-white transition-colors"
+                onClick={() => window.scrollTo(0, 0)}
+              >
                 Impressum
-              </a>
-              <a href="/" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link 
+                to="/datenschutz" 
+                className="text-gray-400 hover:text-white transition-colors"
+                onClick={() => window.scrollTo(0, 0)}
+              >
                 Datenschutz
-              </a>
-              <a href="/" className="text-gray-400 hover:text-white transition-colors">
-                AGB
-              </a>
-              <a href="/" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link 
+                to="/cookie-einstellungen" 
+                className="text-gray-400 hover:text-white transition-colors"
+                onClick={() => window.scrollTo(0, 0)}
+              >
                 Cookie-Einstellungen
-              </a>
+              </Link>
             </div>
           </div>
         </div>

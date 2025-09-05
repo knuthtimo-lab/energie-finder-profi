@@ -3,13 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SimpleSelect, SimpleSelectItem } from "@/components/ui/simple-select";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Building2, MapPin, Phone, Mail, Globe, CheckCircle, Users, Award, Clock } from "lucide-react";
 import Header from "@/components/Header";
+import { usePostHog } from "@/hooks/usePostHog";
+import { sendCompanyRegistrationEmail } from "@/lib/emailService";
 
 const UnternehmenListen = () => {
+  const posthog = usePostHog();
+  
   const [formData, setFormData] = useState({
     companyName: "",
     contactPerson: "",
@@ -37,6 +41,14 @@ const UnternehmenListen = () => {
       ...prev,
       [field]: value
     }));
+    
+    // Track form interactions
+    if (field === 'experience') {
+      posthog.capture('experience_selected', {
+        experience_level: value,
+        form_section: 'company_registration'
+      });
+    }
   };
 
   const handleEnergyTypeChange = (type: string, checked: boolean) => {
@@ -51,6 +63,13 @@ const UnternehmenListen = () => {
         energyTypes: prev.energyTypes.filter(t => t !== type)
       }));
     }
+    
+    // Track energy type selection
+    posthog.capture('energy_type_selected', {
+      energy_type: type,
+      selected: checked,
+      form_section: 'company_registration'
+    });
   };
 
   const handleServiceChange = (service: string, checked: boolean) => {
@@ -65,14 +84,63 @@ const UnternehmenListen = () => {
         services: prev.services.filter(s => s !== service)
       }));
     }
+    
+    // Track service selection
+    posthog.capture('service_selected', {
+      service: service,
+      selected: checked,
+      form_section: 'company_registration'
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Track form submission in PostHog
+    posthog.capture('company_registration_started', {
+      company_name: formData.companyName,
+      energy_types: formData.energyTypes,
+      services: formData.services,
+      experience: formData.experience,
+      location: `${formData.zipCode} ${formData.city}`
+    });
+    
+    try {
+      // Send email notification via webhook
+      const result = await sendCompanyRegistrationEmail(formData);
+      
+      if (result.success) {
+        console.log('✅ E-Mail erfolgreich an Webhook gesendet!');
+        console.log('📧 Daten wurden an knuth.timo@gmail.com weitergeleitet');
+        
+        // Track successful submission
+        posthog.capture('company_registration_completed', {
+          company_name: formData.companyName,
+          energy_types: formData.energyTypes,
+          services: formData.services,
+          experience: formData.experience,
+          location: `${formData.zipCode} ${formData.city}`
+        });
+      } else {
+        console.log('⚠️ Webhook-Fehler, aber Daten wurden geloggt:', result.data);
+        
+        // Track failed submission
+        posthog.capture('company_registration_failed', {
+          company_name: formData.companyName,
+          error: result.error || 'Webhook failed'
+        });
+      }
+      
+    } catch (error) {
+      console.error('❌ Fehler beim Senden der E-Mail:', error);
+      
+      // Track failed submission
+      posthog.capture('company_registration_failed', {
+        company_name: formData.companyName,
+        error: error.message
+      });
+    }
     
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -266,17 +334,16 @@ const UnternehmenListen = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="experience">Jahre Erfahrung *</Label>
-                      <Select value={formData.experience} onValueChange={(value) => handleInputChange("experience", value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Erfahrung wählen" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0-2">0-2 Jahre</SelectItem>
-                          <SelectItem value="3-5">3-5 Jahre</SelectItem>
-                          <SelectItem value="6-10">6-10 Jahre</SelectItem>
-                          <SelectItem value="10+">Über 10 Jahre</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SimpleSelect 
+                        value={formData.experience} 
+                        onValueChange={(value) => handleInputChange("experience", value)}
+                        placeholder="Erfahrung wählen"
+                      >
+                        <SimpleSelectItem value="0-2">0-2 Jahre</SimpleSelectItem>
+                        <SimpleSelectItem value="3-5">3-5 Jahre</SimpleSelectItem>
+                        <SimpleSelectItem value="6-10">6-10 Jahre</SimpleSelectItem>
+                        <SimpleSelectItem value="10+">Über 10 Jahre</SimpleSelectItem>
+                      </SimpleSelect>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="coverageArea">Einzugsgebiet</Label>

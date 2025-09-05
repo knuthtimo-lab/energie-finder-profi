@@ -2,8 +2,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Zap, ArrowRight, Calculator, Award, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
+import { usePostHog } from "@/hooks/usePostHog";
 
 const HeroSection = () => {
+  const posthog = usePostHog();
+
+  const handleSearchClick = () => {
+    posthog.capture('hero_search_clicked', {
+      location: 'hero_section',
+      action: 'search_installers'
+    });
+  };
+
+  const handleViewAllClick = () => {
+    posthog.capture('hero_view_all_clicked', {
+      location: 'hero_section',
+      action: 'view_all_installers'
+    });
+  };
+
   return (
     <section className="relative min-h-[600px] flex items-center overflow-hidden">
       {/* Background Image with Minimal Overlay */}
@@ -86,6 +103,7 @@ const HeroSection = () => {
                 variant="hero" 
                 size="lg" 
                 className="bg-cyan-600 hover:bg-cyan-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={handleSearchClick}
               >
                 <Link to="/installateur-finden">
                   <Search className="w-5 h-5 mr-2" />
@@ -146,6 +164,7 @@ const HeroSection = () => {
           variant="outline" 
           size="lg" 
           className="border-2 border-white/40 text-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
+          onClick={handleViewAllClick}
         >
           <Link to="/installateur-finden" className="flex items-center">
             Alle Installateure Ansehen
