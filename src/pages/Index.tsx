@@ -160,7 +160,7 @@ const Index = () => {
         {/* SEO: Rich content section for better indexing */}
         <section className="py-16 bg-gradient-to-b from-background to-secondary/10">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
               {/* SEO Content Block 1: Installateur finden */}
               <Card className="border-l-4 border-l-orange-500">
                 <CardHeader>
@@ -191,37 +191,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              {/* SEO Content Block 2: Förderprogramme */}
-              <Card className="border-l-4 border-l-green-500">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-green-700">
-                    <Award className="w-5 h-5" />
-                    Förderprogramme 2025
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Aktuelle Förderungen für erneuerbare Energien: BAFA, KfW und kommunale 
-                    Zuschüsse je nach Bundesland und Projektgröße.
-                  </p>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                      <span>BAFA bis 500€ für Balkonkraftwerke</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                      <span>KfW-Kredite mit Tilgungszuschuss</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                      <span>Kommunale Förderprogramme</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* SEO Content Block 3: Regionale Expertise */}
+              {/* SEO Content Block 2: Regionale Expertise */}
               <Card className="border-l-4 border-l-blue-500">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-blue-700">
@@ -272,13 +242,6 @@ const Index = () => {
                   </p>
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h3 className="font-semibold mb-3 text-lg">Welche Förderungen gibt es 2025?</h3>
-                  <p className="text-muted-foreground">
-                    BAFA-Förderung für Balkonkraftwerke (bis 500€), KfW-Kredite mit Tilgungszuschuss, 
-                    EEG-Vergütung für Überschussstrom und kommunale Zuschüsse je nach Bundesland.
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="font-semibold mb-3 text-lg">Was kostet eine Solar- oder Windanlage?</h3>
                   <p className="text-muted-foreground">
                     Balkonkraftwerk: 400-800€, Komplette Dachanlage: 8.000-15.000€ je kWp, 
@@ -309,7 +272,21 @@ const Index = () => {
                   Berechnen Sie Ihre Solareinsparungen und vergleichen Sie Angebote
                 </p>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link to="/solar">Zum Solarrechner</Link>
+                  <Link 
+                    to="/solar" 
+                    onClick={() => {
+                      setTimeout(() => {
+                        const calculatorElement = document.querySelector('[data-calculator]') || 
+                                                document.querySelector('.calculator') ||
+                                                document.querySelector('h2');
+                        if (calculatorElement) {
+                          calculatorElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }, 100);
+                    }}
+                  >
+                    Zum Solarrechner
+                  </Link>
                 </Button>
               </Card>
               <Card className="text-center p-8 hover:shadow-lg transition-shadow">
@@ -319,7 +296,21 @@ const Index = () => {
                   Windenergie berechnen: Ertrag, Kosten & Angebote vergleichen
                 </p>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link to="/wind">Zum Windrechner</Link>
+                  <Link 
+                    to="/wind" 
+                    onClick={() => {
+                      setTimeout(() => {
+                        const calculatorElement = document.querySelector('[data-calculator]') || 
+                                                document.querySelector('.calculator') ||
+                                                document.querySelector('h2');
+                        if (calculatorElement) {
+                          calculatorElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }, 100);
+                    }}
+                  >
+                    Zum Windrechner
+                  </Link>
                 </Button>
               </Card>
               <Card className="text-center p-8 hover:shadow-lg transition-shadow">

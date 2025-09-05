@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, Star, Phone, Mail, Globe, Filter, AlertCircle, Calculator, Award, Shield, TrendingUp, Map, Users, Clock, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
@@ -271,38 +270,39 @@ const InstallateurFinden = () => {
     e.preventDefault(); // Prevent default button behavior
     e.stopPropagation(); // Stop event bubbling
     
-    if (currentPage >= 2) {
-      // After 3 clicks (30 installers), show all remaining
-      setShowAll(true);
-      setCurrentPage(0);
-      await loadInstallers(false);
-    } else {
-      // Load next 10 installers
-      const nextPage = currentPage + 1;
-      setCurrentPage(nextPage);
+    // Hard cut at 69 installers - don't load more after that
+    if (displayedInstallers.length >= 69) {
+      return;
+    }
+    
+    // Load next 10 installers, but limit to 69 total
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    
+    try {
+      setLoading(true);
+      setError(null);
       
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const filters = {
-          energyType: energyType && energyType !== "all" ? energyType : undefined,
-          bundesland: bundesland && bundesland !== "all" ? bundesland : undefined,
-          searchTerm: searchTerm || undefined,
-          limit: 10,
-          offset: nextPage * 10
-        };
+      const filters = {
+        energyType: energyType && energyType !== "all" ? energyType : undefined,
+        bundesland: bundesland && bundesland !== "all" ? bundesland : undefined,
+        searchTerm: searchTerm || undefined,
+        limit: 10,
+        offset: nextPage * 10
+      };
 
-        const result = await installerService.getInstallers(filters);
-        const newInstallers = [...displayedInstallers, ...(result.data || [])];
-        setDisplayedInstallers(newInstallers);
-        setTotalInstallers(result.totalCount || 0);
-      } catch (err) {
-        console.error('Error loading more installers:', err);
-        setError('Fehler beim Laden weiterer Installateure. Bitte versuchen Sie es später erneut.');
-      } finally {
-        setLoading(false);
-      }
+      const result = await installerService.getInstallers(filters);
+      const newInstallers = [...displayedInstallers, ...(result.data || [])];
+      
+      // Hard cut at 69 installers
+      const limitedInstallers = newInstallers.slice(0, 69);
+      setDisplayedInstallers(limitedInstallers);
+      setTotalInstallers(Math.max(limitedInstallers.length, result.totalCount || 0));
+    } catch (err) {
+      console.error('Error loading more installers:', err);
+      setError('Fehler beim Laden weiterer Installateure. Bitte versuchen Sie es später erneut.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -547,41 +547,39 @@ const InstallateurFinden = () => {
                 />
               </div>
               
-              <Select value={energyType} onValueChange={setEnergyType}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Energieart wählen" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Alle Energiearten</SelectItem>
-                  <SelectItem value="solar">Solar</SelectItem>
-                  <SelectItem value="wind">Wind</SelectItem>
-                </SelectContent>
-              </Select>
+              <select 
+                value={energyType} 
+                onChange={(e) => setEnergyType(e.target.value)}
+                className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                <option value="all">Alle Energiearten</option>
+                <option value="solar">Solar</option>
+                <option value="wind">Wind</option>
+              </select>
               
-              <Select value={bundesland} onValueChange={setBundesland}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Bundesland wählen" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Alle Bundesländer</SelectItem>
-                  <SelectItem value="Baden-Württemberg">Baden-Württemberg</SelectItem>
-                  <SelectItem value="Bayern">Bayern</SelectItem>
-                  <SelectItem value="Berlin">Berlin</SelectItem>
-                  <SelectItem value="Brandenburg">Brandenburg</SelectItem>
-                  <SelectItem value="Bremen">Bremen</SelectItem>
-                  <SelectItem value="Hamburg">Hamburg</SelectItem>
-                  <SelectItem value="Hessen">Hessen</SelectItem>
-                  <SelectItem value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</SelectItem>
-                  <SelectItem value="Niedersachsen">Niedersachsen</SelectItem>
-                  <SelectItem value="Nordrhein-Westfalen">Nordrhein-Westfalen</SelectItem>
-                  <SelectItem value="Rheinland-Pfalz">Rheinland-Pfalz</SelectItem>
-                  <SelectItem value="Saarland">Saarland</SelectItem>
-                  <SelectItem value="Sachsen">Sachsen</SelectItem>
-                  <SelectItem value="Sachsen-Anhalt">Sachsen-Anhalt</SelectItem>
-                  <SelectItem value="Schleswig-Holstein">Schleswig-Holstein</SelectItem>
-                  <SelectItem value="Thüringen">Thüringen</SelectItem>
-                </SelectContent>
-              </Select>
+              <select 
+                value={bundesland} 
+                onChange={(e) => setBundesland(e.target.value)}
+                className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                <option value="all">Alle Bundesländer</option>
+                <option value="Baden-Württemberg">Baden-Württemberg</option>
+                <option value="Bayern">Bayern</option>
+                <option value="Berlin">Berlin</option>
+                <option value="Brandenburg">Brandenburg</option>
+                <option value="Bremen">Bremen</option>
+                <option value="Hamburg">Hamburg</option>
+                <option value="Hessen">Hessen</option>
+                <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
+                <option value="Niedersachsen">Niedersachsen</option>
+                <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+                <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+                <option value="Saarland">Saarland</option>
+                <option value="Sachsen">Sachsen</option>
+                <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
+                <option value="Schleswig-Holstein">Schleswig-Holstein</option>
+                <option value="Thüringen">Thüringen</option>
+              </select>
               
               <Button onClick={handleReset} variant="outline" className="w-full">
                 Filter zurücksetzen
@@ -653,12 +651,12 @@ const InstallateurFinden = () => {
         {/* Results */}
         <div className="mb-4">
           <p className="text-muted-foreground">
-            {displayedInstallers.length} von {totalInstallers} Installateur{totalInstallers !== 1 ? 'e' : ''} angezeigt
+            {displayedInstallers.length} von {Math.max(displayedInstallers.length, totalInstallers)} Installateur{Math.max(displayedInstallers.length, totalInstallers) !== 1 ? 'e' : ''} angezeigt
           </p>
         </div>
 
         {/* Installer Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
           {displayedInstallers.map((installer) => (
             <Card key={installer.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -769,7 +767,7 @@ const InstallateurFinden = () => {
         </div>
 
         {/* Show More Button */}
-        {displayedInstallers.length > 0 && displayedInstallers.length < totalInstallers && (
+        {displayedInstallers.length > 0 && displayedInstallers.length < 69 && displayedInstallers.length < totalInstallers && (
           <div className="text-center mt-12 mb-16">
             <Button 
               type="button"
@@ -778,7 +776,7 @@ const InstallateurFinden = () => {
               size="lg"
               className="px-12 py-3 text-lg font-semibold"
             >
-              {currentPage >= 2 ? 'Alle anzeigen' : 'Mehr anzeigen'}
+              Mehr anzeigen
             </Button>
           </div>
         )}
@@ -848,8 +846,22 @@ const InstallateurFinden = () => {
               <p className="text-muted-foreground mb-4">
                 Berechnen Sie Ihre Solareinsparungen und vergleichen Sie Angebote
               </p>
-              <Button variant="outline" className="w-full">
-                Zum Solarrechner
+              <Button variant="outline" className="w-full" asChild>
+                <Link 
+                  to="/solar" 
+                  onClick={() => {
+                    setTimeout(() => {
+                      const calculatorElement = document.querySelector('[data-calculator]') || 
+                                              document.querySelector('.calculator') ||
+                                              document.querySelector('h2');
+                      if (calculatorElement) {
+                        calculatorElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }, 100);
+                  }}
+                >
+                  Zum Solarrechner
+                </Link>
               </Button>
             </Card>
             <Card className="text-center p-6 hover:shadow-md transition-shadow">
@@ -858,8 +870,22 @@ const InstallateurFinden = () => {
               <p className="text-muted-foreground mb-4">
                 Windenergie berechnen: Ertrag, Kosten & Angebote vergleichen
               </p>
-              <Button variant="outline" className="w-full">
-                Zum Windrechner
+              <Button variant="outline" className="w-full" asChild>
+                <Link 
+                  to="/wind" 
+                  onClick={() => {
+                    setTimeout(() => {
+                      const calculatorElement = document.querySelector('[data-calculator]') || 
+                                              document.querySelector('.calculator') ||
+                                              document.querySelector('h2');
+                      if (calculatorElement) {
+                        calculatorElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }, 100);
+                  }}
+                >
+                  Zum Windrechner
+                </Link>
               </Button>
             </Card>
           </div>

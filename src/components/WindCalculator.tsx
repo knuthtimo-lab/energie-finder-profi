@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { HelpCircle, Wind, Zap } from 'lucide-react';
 import { analyticsService } from '@/lib/database';
 
@@ -285,17 +284,16 @@ const WindCalculator = () => {
                         Grundstücksart
                         <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400" />
                       </label>
-                      <Select value={zoning} onValueChange={setZoning}>
-                        <SelectTrigger className="h-12 border-2 border-green-200">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="rural">Ländlich</SelectItem>
-                          <SelectItem value="suburban">Vorstädtisch</SelectItem>
-                          <SelectItem value="urban">Städtisch</SelectItem>
-                          <SelectItem value="agricultural">Landwirtschaftlich</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <select 
+                        value={zoning} 
+                        onChange={(e) => setZoning(e.target.value)}
+                        className="h-12 w-full rounded-md border-2 border-green-200 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+                      >
+                        <option value="rural">Ländlich</option>
+                        <option value="suburban">Vorstädtisch</option>
+                        <option value="urban">Städtisch</option>
+                        <option value="agricultural">Landwirtschaftlich</option>
+                      </select>
                     </div>
                   </div>
                 </CardContent>
@@ -309,18 +307,17 @@ const WindCalculator = () => {
                         Durchschnittliche Windgeschwindigkeit (km/h)
                         <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400" />
                       </label>
-                      <Select value={windSpeed} onValueChange={setWindSpeed}>
-                        <SelectTrigger className="h-12 border-2 border-green-200">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="8">13 km/h (Schwache Windzone)</SelectItem>
-                          <SelectItem value="10">16 km/h (Mäßiger Wind)</SelectItem>
-                          <SelectItem value="12">19 km/h (Gute Windressource)</SelectItem>
-                          <SelectItem value="15">24 km/h (Ausgezeichneter Wind)</SelectItem>
-                          <SelectItem value="18">29+ km/h (Hervorragender Wind)</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <select 
+                        value={windSpeed} 
+                        onChange={(e) => setWindSpeed(e.target.value)}
+                        className="h-12 w-full rounded-md border-2 border-green-200 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+                      >
+                        <option value="8">13 km/h (Schwache Windzone)</option>
+                        <option value="10">16 km/h (Mäßiger Wind)</option>
+                        <option value="12">19 km/h (Gute Windressource)</option>
+                        <option value="15">24 km/h (Ausgezeichneter Wind)</option>
+                        <option value="18">29+ km/h (Hervorragender Wind)</option>
+                      </select>
                     </div>
 
                     <div>
@@ -328,18 +325,17 @@ const WindCalculator = () => {
                         Max. erlaubte Anlagenhöhe (m)
                         <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400" />
                       </label>
-                      <Select value={turbineHeight} onValueChange={setTurbineHeight}>
-                        <SelectTrigger className="h-12 border-2 border-green-200">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="40">12 m (Eingeschränkte Gebiete)</SelectItem>
-                          <SelectItem value="60">18 m (Vorstädtisches Limit)</SelectItem>
-                          <SelectItem value="80">24 m (Standard Wohngebiet)</SelectItem>
-                          <SelectItem value="100">30 m (Ländliche Gebiete)</SelectItem>
-                          <SelectItem value="120">36+ m (Keine Beschränkungen)</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <select 
+                        value={turbineHeight} 
+                        onChange={(e) => setTurbineHeight(e.target.value)}
+                        className="h-12 w-full rounded-md border-2 border-green-200 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
+                      >
+                        <option value="40">12 m (Eingeschränkte Gebiete)</option>
+                        <option value="60">18 m (Vorstädtisches Limit)</option>
+                        <option value="80">24 m (Standard Wohngebiet)</option>
+                        <option value="100">30 m (Ländliche Gebiete)</option>
+                        <option value="120">36+ m (Keine Beschränkungen)</option>
+                      </select>
                     </div>
 
                     <div>

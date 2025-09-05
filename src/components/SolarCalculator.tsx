@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { HelpCircle } from 'lucide-react';
 import { analyticsService, quoteService } from '@/lib/database';
 
@@ -290,17 +289,16 @@ const SolarCalculator = () => {
                         Dachtyp
                         <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400" />
                       </label>
-                      <Select value={roofType} onValueChange={setRoofType}>
-                        <SelectTrigger className="h-12 border-2 border-gray-200">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="asphalt">Ziegeldach</SelectItem>
-                          <SelectItem value="tile">Tonziegel</SelectItem>
-                          <SelectItem value="metal">Metalldach</SelectItem>
-                          <SelectItem value="flat">Flachdach</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <select 
+                        value={roofType} 
+                        onChange={(e) => setRoofType(e.target.value)}
+                        className="h-12 w-full rounded-md border-2 border-gray-200 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                      >
+                        <option value="asphalt">Ziegeldach</option>
+                        <option value="tile">Tonziegel</option>
+                        <option value="metal">Metalldach</option>
+                        <option value="flat">Flachdach</option>
+                      </select>
                     </div>
                   </div>
                 </CardContent>
@@ -314,18 +312,17 @@ const SolarCalculator = () => {
                         Tägliche Sonnenstunden
                         <HelpCircle className="inline w-4 h-4 ml-1 text-gray-400" />
                       </label>
-                      <Select value={sunlightHours} onValueChange={setSunlightHours}>
-                        <SelectTrigger className="h-12 border-2 border-gray-200">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="4">4 Stunden (Weniger sonnige Gebiete)</SelectItem>
-                          <SelectItem value="5">5 Stunden (Mäßige Sonne)</SelectItem>
-                          <SelectItem value="6">6 Stunden (Gute Sonneneinstrahlung)</SelectItem>
-                          <SelectItem value="7">7 Stunden (Sehr sonnig)</SelectItem>
-                          <SelectItem value="8">8+ Stunden (Ausgezeichnete Sonne)</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <select 
+                        value={sunlightHours} 
+                        onChange={(e) => setSunlightHours(e.target.value)}
+                        className="h-12 w-full rounded-md border-2 border-gray-200 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                      >
+                        <option value="4">4 Stunden (Weniger sonnige Gebiete)</option>
+                        <option value="5">5 Stunden (Mäßige Sonne)</option>
+                        <option value="6">6 Stunden (Gute Sonneneinstrahlung)</option>
+                        <option value="7">7 Stunden (Sehr sonnig)</option>
+                        <option value="8">8+ Stunden (Ausgezeichnete Sonne)</option>
+                      </select>
                     </div>
 
                     <div>

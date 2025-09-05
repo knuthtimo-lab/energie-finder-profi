@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { 
   Mail, 
   Phone, 
@@ -52,29 +53,63 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Schnellzugriff</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/" className="text-gray-300 hover:text-white transition-colors">
+                <Link 
+                  to="/solar" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={() => window.scrollTo(0, 0)}
+                >
                   Solar-Installation
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="text-gray-300 hover:text-white transition-colors">
+                <Link 
+                  to="/wind" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={() => window.scrollTo(0, 0)}
+                >
                   Windenergie
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/installateur-finden" className="text-gray-300 hover:text-white transition-colors">
                   Installateur finden
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="text-gray-300 hover:text-white transition-colors">
-                  Förderungen 2025
-                </a>
+                <Link 
+                  to="/solar" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={() => {
+                    setTimeout(() => {
+                      const calculatorElement = document.querySelector('[data-calculator]') || 
+                                              document.querySelector('.calculator') ||
+                                              document.querySelector('h2');
+                      if (calculatorElement) {
+                        calculatorElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }, 100);
+                  }}
+                >
+                  Solar-Kostenrechner
+                </Link>
               </li>
               <li>
-                <a href="/" className="text-gray-300 hover:text-white transition-colors">
-                  Kostenrechner
-                </a>
+                <Link 
+                  to="/wind" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                  onClick={() => {
+                    setTimeout(() => {
+                      const calculatorElement = document.querySelector('[data-calculator]') || 
+                                              document.querySelector('.calculator') ||
+                                              document.querySelector('h2');
+                      if (calculatorElement) {
+                        calculatorElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }, 100);
+                  }}
+                >
+                  Wind-Kostenrechner
+                </Link>
               </li>
             </ul>
           </div>

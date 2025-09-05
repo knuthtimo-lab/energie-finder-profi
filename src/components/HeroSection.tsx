@@ -19,7 +19,7 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-2xl text-white">
+        <div className="max-w-4xl text-white">
           {/* Clean headline with subtle color accents */}
           <div className="mb-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
@@ -47,30 +47,50 @@ const HeroSection = () => {
           </p>
 
           {/* Clean search box */}
-          <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-2xl p-6 mb-8">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative group">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-200 w-5 h-5" />
-                <Input
-                  placeholder="PLZ oder Stadt eingeben..."
-                  className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/70 h-12 focus:border-cyan-200 focus:ring-cyan-200/20 transition-all duration-300"
-                />
+          <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-2xl px-12 py-8 mb-8 max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-1 relative group min-w-0">
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-200 w-5 h-5 z-10" />
+                <select className="pl-10 bg-white border-gray-300 text-gray-900 h-12 w-full rounded-md border px-3 py-2 text-sm focus:border-cyan-200 focus:ring-2 focus:ring-cyan-200/20 focus:outline-none min-w-[200px]">
+                  <option value="">Bundesland wählen</option>
+                  <option value="all">Alle Bundesländer</option>
+                  <option value="Baden-Württemberg">Baden-Württemberg</option>
+                  <option value="Bayern">Bayern</option>
+                  <option value="Berlin">Berlin</option>
+                  <option value="Brandenburg">Brandenburg</option>
+                  <option value="Bremen">Bremen</option>
+                  <option value="Hamburg">Hamburg</option>
+                  <option value="Hessen">Hessen</option>
+                  <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
+                  <option value="Niedersachsen">Niedersachsen</option>
+                  <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+                  <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+                  <option value="Saarland">Saarland</option>
+                  <option value="Sachsen">Sachsen</option>
+                  <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
+                  <option value="Schleswig-Holstein">Schleswig-Holstein</option>
+                  <option value="Thüringen">Thüringen</option>
+                </select>
               </div>
-              <div className="flex-1 relative group">
-                <Zap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-200 w-5 h-5" />
-                <select className="w-full h-12 pl-10 pr-4 bg-white/20 border-white/30 rounded-lg text-white appearance-none focus:border-yellow-200 focus:ring-yellow-200/20 transition-all duration-300">
+              <div className="flex-1 relative group min-w-0">
+                <Zap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-200 w-5 h-5 z-10" />
+                <select className="pl-10 bg-white border-gray-300 text-gray-900 h-12 w-full rounded-md border px-3 py-2 text-sm focus:border-yellow-200 focus:ring-2 focus:ring-yellow-200/20 focus:outline-none min-w-[200px]">
                   <option value="">Energieart wählen</option>
+                  <option value="all">Alle Energiearten</option>
                   <option value="solar">Solar</option>
                   <option value="wind">Wind</option>
                 </select>
               </div>
               <Button 
+                asChild
                 variant="hero" 
                 size="lg" 
                 className="bg-cyan-600 hover:bg-cyan-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <Search className="w-5 h-5 mr-2" />
-                Installateur Finden
+                <Link to="/installateur-finden">
+                  <Search className="w-5 h-5 mr-2" />
+                  Installateur Finden
+                </Link>
               </Button>
             </div>
           </div>
@@ -80,14 +100,10 @@ const HeroSection = () => {
       {/* Clean floating stats */}
       <div className="absolute bottom-8 right-8 hidden xl:block">
         <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-2xl p-6 text-white shadow-lg">
-          <div className="grid grid-cols-3 gap-6 text-center">
+          <div className="grid grid-cols-2 gap-6 text-center">
             <div>
-              <div className="text-3xl font-bold text-yellow-200">500+</div>
+              <div className="text-3xl font-bold text-yellow-200">60+</div>
               <div className="text-sm text-white/90 font-medium">Installateure</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-cyan-200">2,500+</div>
-              <div className="text-sm text-white/90 font-medium">Projekte</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-green-200">4.8★</div>
@@ -98,18 +114,13 @@ const HeroSection = () => {
       </div>
 
       {/* SEO: Additional content section for better indexing */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent py-8 hidden lg:block">
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent py-3 hidden lg:block">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-3 gap-8 text-white/90">
+          <div className="grid grid-cols-2 gap-8 text-white/90 max-w-2xl mx-auto">
             <div className="text-center">
               <Calculator className="w-8 h-8 mx-auto mb-2 text-yellow-300" />
               <h3 className="font-semibold mb-1">Kostenlose Rechner</h3>
               <p className="text-sm">Solar- und Windenergie berechnen</p>
-            </div>
-            <div className="text-center">
-              <Award className="w-8 h-8 mx-auto mb-2 text-cyan-300" />
-              <h3 className="font-semibold mb-1">Förderprogramme</h3>
-              <p className="text-sm">BAFA, KfW & kommunale Zuschüsse</p>
             </div>
             <div className="text-center">
               <Shield className="w-8 h-8 mx-auto mb-2 text-green-300" />
